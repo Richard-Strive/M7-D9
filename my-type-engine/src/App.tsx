@@ -11,7 +11,8 @@ function App() {
   return (
     <div className="App">
       <Router>
-      <Home/>
+       <Route path="/" exact render={(props)=><Home {...props}/>}/>
+       <Route path="/details/:id" exact render={(props)=><Details {...props}/>}/>
       </Router>
     </div>
   );

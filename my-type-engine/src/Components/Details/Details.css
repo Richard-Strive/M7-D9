@@ -1,0 +1,13 @@
+.details_container {
+  background-image: url("https://cutewallpaper.org/21/music-wallpapers-for-desktop/Fresh-Free-Music-Wallpapers-for-Desktop-Wallpaper-Collections.jpg");
+  height: 120vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+}
+
+.img_det {
+  height: 100vh;
+  width: 35vw;
+}

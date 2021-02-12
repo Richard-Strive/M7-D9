@@ -8,43 +8,28 @@ import {
     Nav,
     Navbar,
     Container,
-    Card
+    Card,
+    Row,
+    Col
 } from "react-bootstrap";
 import "./Home.css";
+import {AlbumGeneral} from "../../interface"
+import {RouteComponentProps} from "react-router-dom"
 /*
  * For the main search use https://deezerdevs-deezer.p.rapidapi.com/search?q=whatever to get some results
     Use the id property of any resulting track to fetch detail information with https://deezerdevs-deezer.p.rapidapi.com/track/:id
  */
 
-/*
- 
- fetch("https://deezerdevs-deezer.p.rapidapi.com/search?q=${eminem}", {
-    "method": "GET",
-    "headers": {
-        "x-rapidapi-key": "072ce4fe12mshfaac4b953a12006p1fbad8jsn60c87d42c08b",
-        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com"
-    }
-})
-.then(response => {
-    console.log(response);
-})
-.catch(err => {
-    console.error(err);
-});
 
- */
+function Home(props:RouteComponentProps) {
 
-
-
-function Home() {
-    // type data = Array<any>;
     // type setData= React.Dispatch<React.SetStateAction<never[]>>
     // type search = Array<any>;
     // type setSearch= React.Dispatch<React.SetStateAction<string>>
-
-    const [data, setData] = useState([1]);
-    const [search, setSearch] = useState("");
-
+    
+    const [data, setData] = useState<AlbumGeneral[]>([]);
+    const [search, setSearch] = useState<string>("");
+    
     const getData = async () => {
         try {
             const resp = await fetch(
@@ -53,19 +38,24 @@ function Home() {
                     method: "GET",
                     headers: {
                         "x-rapidapi-key":
-                            "072ce4fe12mshfaac4b953a12006p1fbad8jsn60c87d42c08b",
+                        "072ce4fe12mshfaac4b953a12006p1fbad8jsn60c87d42c08b",
                         "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
                     },
                 }
-            );
-
-            if (resp.ok) {
-                console.log(resp);
-                const data = await resp.json();
-                setData(data);
-            }
-        } catch (error) {
-            console.log(error);
+                );
+                
+                if (resp.ok) {
+                    console.log(resp);
+                    const data = await resp.json();
+                    
+                    const myData= data.data
+                    setData(myData);
+                    
+                    console.log(props)
+                    console.log(JSON.stringify(myData[0]))
+                }
+            } catch (error) {
+                console.log(error);
         }
     };
 
@@ -102,21 +92,34 @@ function Home() {
                 </Navbar>
             </div>
             <div className="home_main">
+                
+<Container className="mt-5">
+    <Row >
 
-                {data.map((song) =>
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src="holder.js/100px180" />
-                        <Card.Body>
-                            <Card.Title>Card Title</Card.Title>
+{data.slice(0,5).map((song) =>
+<Col>
+<Card style={{ width: '12rem' }}>
+
+                        <Card.Img variant="top" src={song.album.cover} />
+                        <Card.Body className="the_card">
+                            <Card.Title>{song.artist.name}</Card.Title>
                             <Card.Text>
-                                Some quick example text to build on the card title and make up the bulk of
-                                the card's content.
+                            {song.title}
+                            {song.album.id}
+                               
                 </Card.Text>
-                            <Button variant="primary">Go somewhere</Button>
+                            <Button variant="primary" onClick={()=>props.history.push(`/details/${song.album.id}`)}>Go somewhere</Button>
                         </Card.Body>
                     </Card>
+                    </Col>
                 )
-                }
+                
+            } 
+
+       
+            </Row>
+</Container>
+              
 
 
 
